@@ -9,21 +9,24 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 # os.environ["OPENAI_API_KEY"] = "..."
 
 # Define system message for GPT
-system_message = """Ti passerò la trascrizione di un video Youtube. Il tuo compito è creare degli script per una serie di "Youtube Shorts" correlati. Sta a te decidere quanti short creare, in base alle informazioni presenti nella trascrizione.
+system_message = """Ti passerò la trascrizione di un video Youtube. Il tuo compito è creare una serie di script per degli "Youtube Shorts" correlati. Sta a te decidere quanti short creare, in base alle informazioni presenti nella trascrizione.
 
-Uno Youtube Short è un video di 45-60 secondi che viene pubblicato su Youtube. È fatto per essere consumato da mobile, e per questo il formato è verticale ed è sempre accompagnato da captions per cho lo guarda senza audio.
+Uno Youtube Short è un breve video di 45-60 secondi che viene pubblicato su Youtube. È fatto per essere consumato da mobile, e per questo il formato è verticale ed è sempre accompagnato da captions per cho lo guarda senza audio.
 
 Quando crei uno short, assicurati di seguire queste linee guida:
 
-- La lunghezza del tuo script per lo short deve essere compresa tra 80 e 100 parole.
-- Lo short deve contenere una singola idea ed esporla nella sua interità in maniera completa.
+- Ciascuno short deve essere compresa tra 80 e 100 parole.
+- Lo short deve contenere una singola idea ed esporla in maniera completa ed incisiva.
 - Usa il framework "WIIFM", o "What's In It For Me": ogni short deve dare qualcosa di utile o interessante a chi lo guarda.
-- Gli short devono matenere alta l'attenzione di un pubblico giovane e altamente distratto. Per questo, è importante che siano densi di contenuto e che contengano informazioni utili e interessanti dal primo all'ultimo secondo.
-- Uno short non può essere troppo corto: deve esserci abbastanza tempo per comunicare un'idea in maniera chiara e completa e dare valore al pubblico. Per questo, cerca di scrivere almeno 80 parole.
+- Gli short devono matenere alta l'attenzione di un pubblico giovane e altamente distratto. Per questo, è importante che siano densi di contenuto e che contengano informazioni utili e interessanti dal primo all'ultimo secondo, senza perdersi in introduzioni o saluti.
+- Uno short deve essere corto ma deve comunicare un'idea in maniera chiara e completa e dare valore al pubblico. Per questo, cerca di scrivere almeno 80 parole.
 - Ogni short deve comunicare una singola idea ed esporla nella sua interità: non creare shorts che richiedono di guardare altri shorts o il video principale per essere compresi.
+- Vedi uno Short come se fosse un TikTok.
 - Per ogni short crea un titolo estremamente breve (massimo 6 parole), che verrà inserito come thumbnail allo short.
 - Se la trascrizione non ha abbastanza materiale per generare uno short di qualità, il tuo output è una stringa vuota.
-- Cerca di scrivere pochi Shorts, ma di alta qualità e densi di contenuto: la qualità è molto più importante della quantità."""
+- Scrivi in lingua italiana.
+
+SCRIPT DEGLI SHORTS:"""
 
 # Import text file
 with open("trascrizione.txt", "r", encoding="utf-8") as file:
@@ -45,7 +48,7 @@ def choose_model():
     model = input("Inserisci il numero del modello: ")
     if model == "1" or model == "":
         model = "gpt-3.5-turbo-16k-0613"
-        limit = 10000
+        limit = 8000
     elif model == "2":
         model = "gpt-4-0613"
         limit = 5000
