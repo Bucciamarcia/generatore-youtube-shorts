@@ -1,8 +1,6 @@
 import tiktoken
+from openai import OpenAI
 from langchain.text_splitter import TokenTextSplitter
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 # Se non hai impostato la chiavi API nell'environment, togli il commento alle 2 righe seguenti e inserisci la tua chiave API
 # import os
@@ -57,19 +55,15 @@ def split_text_in_chunks(tokens: int, limit):
 
 
 def write_output_for_chunk(chunk, model, sysmessage):
-    chat = ChatOpenAI(
-        temperature=0.3,
+    client = OpenAI()
+    output = client.chat.completions.create(
         model=model,
-        client=any,
-        streaming=True,
-        callbacks=[StreamingStdOutCallbackHandler()],
+        messages=[
+            {"role": "system", "content": sysmessage},
+            {"role": "user", "content": chunk},
+        ],
     )
-    messages = [
-        SystemMessage(content=sysmessage),
-        HumanMessage(content=chunk),
-    ]
-    completion = chat(messages)
-    completion = completion.content
+    completion = output.choices[0].message.content
     # Write output to file
     with open("output.txt", "a", encoding="utf-8") as file:
         file.write(completion)
